@@ -1,0 +1,17 @@
+include: package:very_good_analysis/analysis_options.5.1.0.yaml
+analyzer:
+  errors:
+    lines_longer_than_80_chars: ignore
+    public_member_api_docs: ignore
+    sort_constructors_first: ignore  
+    require_trailing_commas: ignore
+
+  exclude:
+    - build/**
+    - test/**/*.mocks.dart # Exclude generated mocks
+    - lib/**/**.g.dart # Exclude generated response files
+linter:
+  rules:
+    file_names: false
+    no_default_cases: false
+    prefer_single_quotes: true

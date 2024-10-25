@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to Dart VM",
+      "type": "dart",
+      "request": "attach",
+      "vmServiceUri": "http://127.0.0.1:8181/ws"
+    }
+  ]
+}
