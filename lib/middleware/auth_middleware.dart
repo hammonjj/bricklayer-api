@@ -10,7 +10,7 @@ Handler authMiddleware(Handler handler) {
       return Response.json(body: {'error': 'Missing or invalid authorization header'}, statusCode: 401);
     }
 
-    final token = authorizationHeader.substring(7); // Remove 'Bearer ' part
+    final token = authorizationHeader.substring(7);
     final userResponse = await supabaseClient.auth.getUser(token);
 
     if (userResponse.user == null) {
