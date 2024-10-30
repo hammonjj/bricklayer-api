@@ -1,5 +1,7 @@
 import 'package:dart_frog/dart_frog.dart';
+import 'package:dartomite/utils/session_user.dart';
 import 'package:supabase/supabase.dart';
+import 'package:uuid/uuid.dart';
 
 Handler authMiddleware(Handler handler) {
   return (context) async {
@@ -17,6 +19,11 @@ Handler authMiddleware(Handler handler) {
       return Response.json(body: {'error': 'Invalid token'}, statusCode: 401);
     }
 
-    return handler(context.provide<User>(() => userResponse.user!));
+    final sessionUser = SessionUser(
+      id: UuidValue.fromString(userResponse.user!.id),
+      username: userResponse.user!.email!,
+    );
+
+    return handler(context.provide<SessionUser>(() => sessionUser));
   };
 }
