@@ -9,8 +9,8 @@ class UserSetRepository {
   UserSetRepository(this._supabaseClient);
 
   Future<UserSetDto> createUserSet(CreateUserSetRequest userSet, UuidValue userId) async {
-    final data = await _supabaseClient.from('BrickLayer.user_sets').insert({
-      'user_id': userId,
+    final data = await _supabaseClient.from('user_sets').insert({
+      'user_id': userId.toString(),
       'set_id': userSet.setId,
       'brand': userSet.brand,
       'name': userSet.name,
@@ -18,6 +18,7 @@ class UserSetRepository {
       'set_url': userSet.setUrl,
       'image_url': userSet.imageUrl,
       'instructions_url': userSet.instructionsUrl,
+      'pieces': userSet.pieces,
     }).select();
 
     return UserSetDto(
@@ -29,13 +30,14 @@ class UserSetRepository {
       setUrl: data.first['set_url'] as String?,
       imageUrl: data.first['image_url'] as String?,
       instructionsUrl: data.first['instructions_url'] as String?,
+      pieces: data.first['pieces'] as int?,
     );
   }
 
   Future<List<UserSetDto>> getSetsByUserId(UuidValue userId) async {
     final data = await _supabaseClient
         .from('user_sets')
-        .select('id, user_id, set_id, brand, name, currently_built, set_url, image_url, instructions_url')
+        .select('id, user_id, set_id, brand, name, currently_built, set_url, image_url, instructions_url, pieces')
         .eq('user_id', userId.toString());
 
     if (data.isEmpty) {
@@ -43,6 +45,7 @@ class UserSetRepository {
     }
 
     return data
+        .toList()
         .map((set) => UserSetDto(
               id: UuidValue.fromString(set['id'] as String),
               setId: set['set_id'] as String?,
@@ -52,14 +55,15 @@ class UserSetRepository {
               setUrl: set['set_url'] as String?,
               imageUrl: set['image_url'] as String?,
               instructionsUrl: set['instructions_url'] as String?,
+              pieces: set['pieces'] as int?,
             ))
         .toList();
   }
 
   Future<UserSetDto> getSetById(UuidValue setId, UuidValue userId) async {
     final data = await _supabaseClient
-        .from('BrickLayer.user_sets')
-        .select('id, user_id, set_id, brand, name, currently_built, set_url, image_url, instructions_url')
+        .from('user_sets')
+        .select('id, user_id, set_id, brand, name, currently_built, set_url, image_url, instructions_url, pieces')
         .eq('id', setId)
         .eq('user_id', userId.toString())
         .single();
@@ -73,11 +77,14 @@ class UserSetRepository {
       setUrl: data['set_url'] as String?,
       imageUrl: data['image_url'] as String?,
       instructionsUrl: data['instructions_url'] as String?,
+      pieces: data['pieces'] as int?,
     );
   }
 
-  Future<bool> deleteSetById(UuidValue setId) async {
-    final data = await _supabaseClient.from('BrickLayer.user_sets').delete().eq('id', setId).select();
+  Future<bool> deleteSetById(UuidValue setId, UuidValue userId) async {
+    final data =
+        await _supabaseClient.from('user_sets').delete().eq('id', setId).eq('user_id', userId.toString()).select();
+
     return data.isNotEmpty;
   }
 }

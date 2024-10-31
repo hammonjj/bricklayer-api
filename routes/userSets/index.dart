@@ -26,13 +26,20 @@ Future<Response> _getAllUserSets(RequestContext context) async {
 }
 
 Future<Response> _createUserSet(RequestContext context) async {
-  final user = context.read<SessionUser>();
-  final userSetsService = context.read<UserSetService>();
+  try {
+    final user = context.read<SessionUser>();
+    final userSetsService = context.read<UserSetService>();
 
-  final body = await context.request.json() as Map<String, dynamic>;
-  final createUserSetRequest = CreateUserSetRequest.fromJson(body);
+    final body = await context.request.json() as Map<String, dynamic>;
+    final createUserSetRequest = CreateUserSetRequest.fromJson(body);
 
-  final userSet = await userSetsService.createUserSet(createUserSetRequest, user.id);
+    final userSet = await userSetsService.createUserSet(createUserSetRequest, user.id);
 
-  return Response.json(body: CreateUserSetResponse(setInfo: userSet).toJson());
+    return Response.json(body: CreateUserSetResponse(setInfo: userSet).toJson());
+  } catch (e) {
+    return Response.json(
+      body: {'error': 'Failed to create user set.'},
+      statusCode: 500,
+    );
+  }
 }

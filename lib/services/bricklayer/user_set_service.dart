@@ -32,6 +32,11 @@ class UserSetService {
 
   Future<CreateUserSetRequest> _getLegoSetInfo(CreateUserSetRequest userSet) async {
     final setInfo = await _rebrickableRepository.getSetInfo('${userSet.setId!}-1');
-    return userSet.copyWith(setUrl: setInfo.setUrl, imageUrl: setInfo.imgUrl);
+    return userSet.copyWith(
+        name: setInfo.name, pieces: setInfo.numParts, setUrl: setInfo.setUrl, imageUrl: setInfo.imgUrl);
+  }
+
+  Future<void> deleteUserSet(UuidValue setId, UuidValue userId) async {
+    await _userSetRepository.deleteSetById(setId, userId);
   }
 }

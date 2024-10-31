@@ -8,11 +8,11 @@ part 'user_set_dto.g.dart';
 class UserSetDto {
   @RequiredGuidConverter()
   final UuidValue id;
-
+  final bool currentlyBuilt;
+  final int? pieces;
   final String? setId;
   final String? brand;
   final String name;
-  final bool currentlyBuilt;
   final String? setUrl;
   final String? imageUrl;
   final String? instructionsUrl;
@@ -25,7 +25,8 @@ class UserSetDto {
       this.brand,
       this.setUrl,
       this.imageUrl,
-      this.instructionsUrl});
+      this.instructionsUrl,
+      this.pieces});
 
   factory UserSetDto.fromJson(Map<String, dynamic> json) => _$UserSetDtoFromJson(json);
 

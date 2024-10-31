@@ -6,22 +6,24 @@ part 'create_user_set_request.g.dart';
 @CopyWith()
 @JsonSerializable()
 class CreateUserSetRequest {
+  final bool currentlyBuilt;
+  final int? pieces;
   final String? setId;
   final String? brand;
-  final String name;
-  final bool currentlyBuilt;
+  final String? name;
   final String? setUrl;
   final String? imageUrl;
   final String? instructionsUrl;
 
   CreateUserSetRequest(
-      {required this.name,
-      required this.currentlyBuilt,
+      {required this.currentlyBuilt,
+      this.name,
       this.setId,
       this.brand,
       this.setUrl,
       this.imageUrl,
-      this.instructionsUrl});
+      this.instructionsUrl,
+      this.pieces});
 
   factory CreateUserSetRequest.fromJson(Map<String, dynamic> json) => _$CreateUserSetRequestFromJson(json);
 
