@@ -33,32 +33,27 @@ class UserSetRepository {
   }
 
   Future<List<UserSetDto>> getSetsByUserId(UuidValue userId) async {
-    try {
-      final data = await _supabaseClient
-          .from('user_sets')
-          .select('id, user_id, set_id, brand, name, currently_built, set_url, image_url, instructions_url')
-          .eq('user_id', userId.toString());
+    final data = await _supabaseClient
+        .from('user_sets')
+        .select('id, user_id, set_id, brand, name, currently_built, set_url, image_url, instructions_url')
+        .eq('user_id', userId.toString());
 
-      if (data.isEmpty) {
-        return [];
-      }
-
-      return data
-          .map((set) => UserSetDto(
-                id: UuidValue.fromString(set['id'] as String),
-                setId: set['set_id'] as String?,
-                brand: set['brand'] as String?,
-                name: set['name'] as String,
-                currentlyBuilt: set['currently_built'] as bool,
-                setUrl: set['set_url'] as String?,
-                imageUrl: set['image_url'] as String?,
-                instructionsUrl: set['instructions_url'] as String?,
-              ))
-          .toList();
-    } catch (e) {
-      print(e);
+    if (data.isEmpty) {
       return [];
     }
+
+    return data
+        .map((set) => UserSetDto(
+              id: UuidValue.fromString(set['id'] as String),
+              setId: set['set_id'] as String?,
+              brand: set['brand'] as String?,
+              name: set['name'] as String,
+              currentlyBuilt: set['currently_built'] as bool,
+              setUrl: set['set_url'] as String?,
+              imageUrl: set['image_url'] as String?,
+              instructionsUrl: set['instructions_url'] as String?,
+            ))
+        .toList();
   }
 
   Future<UserSetDto> getSetById(UuidValue setId, UuidValue userId) async {

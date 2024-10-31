@@ -25,10 +25,11 @@ class RebrickableRepository {
     }
   }
 
-  Future<List<RebrickableSetPartDto>> getSetParts(String setNum, {int page = 1, int pageSize = 100}) async {
+  Future<List<RebrickableSetPartDto>> getSetParts(String setNum, {int page = 1, int pageSize = 1000}) async {
     final url = Uri.parse(
       'https://rebrickable.com/api/v3/lego/sets/$setNum/parts/?page=$page&page_size=$pageSize',
     );
+
     final response = await http.get(url, headers: _headers);
 
     if (response.statusCode == 200) {

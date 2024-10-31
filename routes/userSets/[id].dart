@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
-import 'package:dartomite/repositories/user_set_repository.dart';
-import 'package:supabase/supabase.dart' as supabase;
-
+import 'package:dartomite/services/bricklayer/user_set_service.dart';
+import 'package:dartomite/utils/session_user.dart';
 import 'package:uuid/uuid_value.dart';
 
 Future<Response> onRequest(RequestContext context, String id) async {
@@ -16,10 +15,9 @@ Future<Response> onRequest(RequestContext context, String id) async {
 }
 
 Future<Response> _getUserSetById(RequestContext context, UuidValue setId) async {
-  final user = context.read<supabase.User>();
-  final userSetsRepository = context.read<UserSetRepository>();
+  final user = context.read<SessionUser>();
+  final userSetsService = context.read<UserSetService>();
 
-  final userSet = await userSetsRepository.getSetById(setId, UuidValue.fromString(user.id));
-
+  final userSet = await userSetsService.getSetById(setId, user.id);
   return Response.json(body: userSet.toJson());
 }
