@@ -35,7 +35,7 @@ Future<Response> _createUserSet(RequestContext context) async {
 
     final userSet = await userSetsService.createUserSet(createUserSetRequest, user.id);
 
-    return Response.json(body: CreateUserSetResponse(setInfo: userSet).toJson());
+    return Response.json(body: CreateUserSetResponse(setInfo: userSet.item1, setPieces: userSet.item2).toJson());
   } catch (e) {
     return Response.json(
       body: {'error': 'Failed to create user set.'},

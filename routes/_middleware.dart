@@ -1,6 +1,9 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dartomite/repositories/rebrickable_repository.dart';
+import 'package:dartomite/repositories/set_piece_repository.dart';
+import 'package:dartomite/repositories/user_piece_repository.dart';
 import 'package:dartomite/repositories/user_set_repository.dart';
+import 'package:dartomite/services/bricklayer/user_piece_service.dart';
 import 'package:dartomite/services/bricklayer/user_set_service.dart';
 import 'package:dartomite/services/supabase_service.dart';
 import 'package:dotenv/dotenv.dart';
@@ -21,10 +24,16 @@ Handler middleware(Handler handler) {
   );
 
   final userSetRepository = UserSetRepository(supabaseClient!);
+  final userPieceRepository = UserPieceRepository(supabaseClient!);
+  final setPieceRepository = SetPieceRepository(supabaseClient!);
   final rebrickableRepository = RebrickableRepository(env['REBRICKABLE_API_KEY']!);
 
   return handler
-      .use(provider<UserSetService>((context) =>
-          UserSetService(userSetRepository: userSetRepository, rebrickableRepository: rebrickableRepository)))
+      .use(provider<UserSetService>((context) => UserSetService(
+          userSetRepository: userSetRepository,
+          rebrickableRepository: rebrickableRepository,
+          userPieceRepository: userPieceRepository,
+          setPieceRepository: setPieceRepository)))
+      .use(provider<UserPieceService>((create) => UserPieceService(userPieceRepository: userPieceRepository)))
       .use(provider<SupabaseService>((context) => SupabaseService(supabaseClient!)));
 }

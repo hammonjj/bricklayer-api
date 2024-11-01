@@ -6,9 +6,16 @@ part 'rebrickable_set_part_model.g.dart';
 class RebrickableSetPartModel {
   final int id;
   final int quantity;
+
+  @JsonKey(name: 'is_spare')
   final bool isSpare;
+
+  @JsonKey(name: 'element_id')
   final String elementId;
+
+  @JsonKey(name: 'set_num')
   final String setNum;
+
   final RebrickablePartDetailModel part;
   final RebrickableColorDetailModel color;
 
@@ -29,10 +36,18 @@ class RebrickableSetPartModel {
 
 @JsonSerializable()
 class RebrickablePartDetailModel {
+  @JsonKey(name: 'part_num')
   final String partNum;
+
   final String name;
+
+  @JsonKey(name: 'part_cat_id')
   final int partCatId;
+
+  @JsonKey(name: 'part_url')
   final String partUrl;
+
+  @JsonKey(name: 'part_img_url')
   final String partImgUrl;
 
   RebrickablePartDetailModel({
@@ -53,6 +68,8 @@ class RebrickableColorDetailModel {
   final int id;
   final String name;
   final String rgb;
+
+  @JsonKey(name: 'is_trans')
   final bool isTrans;
 
   RebrickableColorDetailModel({

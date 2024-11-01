@@ -45,7 +45,6 @@ class UserSetRepository {
     }
 
     return data
-        .toList()
         .map((set) => UserSetDto(
               id: UuidValue.fromString(set['id'] as String),
               setId: set['set_id'] as String?,
