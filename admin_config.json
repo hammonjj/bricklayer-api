@@ -1,8 +1,0 @@
-{
-  "sections": [
-    {
-      "name": "Authentication and Authorization",
-      "tables": ["users", "groups", "user_groups"]
-    }
-  ]
-}
